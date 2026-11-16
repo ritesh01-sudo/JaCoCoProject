@@ -1,40 +1,58 @@
+```groovy
 pipeline {
     agent any
 
     stages {
+
         stage('Checkout') {
             steps {
-                echo 'Downloading code from GitHub'
+                echo 'Downloading project from GitHub'
                 checkout scm
             }
         }
 
         stage('Build and Test') {
             steps {
-                bat 'mvn clean test'
+                echo 'Compiling Java code and running JUnit tests'
+
+                bat '"C:/Apache/Maven/apache-maven-3.10.0/bin/mvn.cmd" clean test'
             }
         }
 
         stage('Generate JaCoCo Report') {
             steps {
-                bat 'mvn jacoco:report'
+                echo 'Generating JaCoCo code coverage report'
+
+                bat '"C:/Apache/Maven/apache-maven-3.10.0/bin/mvn.cmd" jacoco:report'
             }
         }
 
         stage('Publish Test Results') {
             steps {
+                echo 'Publishing JUnit test results'
+
                 junit 'target/surefire-reports/*.xml'
+            }
+        }
+
+        stage('Build Complete') {
+            steps {
+                echo 'Java project build completed successfully!'
             }
         }
     }
 
     post {
         success {
-            echo 'Build completed successfully!'
+            echo 'SUCCESS: All stages completed successfully!'
         }
 
         failure {
-            echo 'Build failed!'
+            echo 'FAILURE: Please check the Jenkins Console Output.'
+        }
+
+        always {
+            echo 'Jenkins pipeline execution finished.'
         }
     }
 }
