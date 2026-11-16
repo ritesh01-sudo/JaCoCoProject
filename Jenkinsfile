@@ -54,10 +54,7 @@ pipeline {
         always {
             echo 'Jenkins pipeline execution finished.'
         }
-        stage('Build and Test') {
-            steps {
-                bat '"C:/Apache/Maven/apache-maven-3.10.0/bin/mvn.cmd" clean test'
-            }
+      
         }
     }
 }
