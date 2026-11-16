@@ -1,9 +1,7 @@
-```groovy
 pipeline {
     agent any
 
     stages {
-
         stage('Checkout') {
             steps {
                 echo 'Downloading code from GitHub'
